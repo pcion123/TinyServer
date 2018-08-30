@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userMapper">
+
+    <resultMap id="user" type="com.tinybee.common.enitiy.User">
+        <result column="userId" property="userId"/>
+        <result column="createTime" property="createTime"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="lockTime" property="lockTime"/>
+        <result column="monthTime" property="monthTime"/>
+        <result column="fbid" property="fbid"/>
+        <result column="vip" property="vip"/>
+        <result column="realPoint" property="realPoint"/>
+        <result column="fakePoint" property="fakePoint"/>
+        <result column="nickName" property="nickName"/>
+        <result column="aboutme" property="aboutme"/>
+        <result column="avatarId" property="avatarId"/>
+        <result column="lv" property="lv"/>
+        <result column="money" property="money"/>
+    </resultMap>
+
+    <select id="getUserByUserId" resultMap="user" parameterType="java.util.Map">
+        select *
+        from tinybee.user
+        where userId = #{userId}
+        limit 1;
+    </select>
+
+    <select id="getUserByFbid" resultMap="user" parameterType="java.util.Map">
+        select *
+        from tinybee.user
+        where fbid = #{fbid}
+        limit 1;
+    </select>
+    
+    <insert id="genUser" parameterType="com.tinybee.common.enitiy.User">
+        <selectKey resultType="java.lang.Integer" keyProperty="userId" order="AFTER" >  
+            select last_insert_id();
+        </selectKey>  
+        insert into tinybee.user
+        (
+            createTime, updateTime, lockTime, monthTime, fbid, vip, realPoint, fakePoint, nickName, aboutme,
+            avatarId, lv, money
+        )
+        values
+        (
+            #{createTime}, #{updateTime}, #{lockTime}, #{monthTime}, #{fbid}, #{vip}, #{realPoint}, #{fakePoint},
+            #{nickName}, #{aboutme}, #{avatarId}, #{lv}, #{money}
+        );
+    </insert>
+
+    <update id="attachFbid" parameterType="java.util.Map">
+        update tinybee.user
+        set fbid = #{fbid}
+        where userId = #{userId};
+    </update>
+
+    <update id="updateVip" parameterType="java.util.Map">
+        update tinybee.user
+        set vip = vip + #{value}
+        where userId = #{userId};
+    </update>
+
+    <update id="updatePoint" parameterType="java.util.Map">
+        update tinybee.user
+        set realPoint = realPoint + #{value1} , fakePoint = fakePoint + #{value2}
+        where userId = #{userId};
+    </update>
+
+    <update id="updateNickName" parameterType="java.util.Map">
+        update tinybee.user
+        set nickName = #{nickName}
+        where userId = #{userId};
+    </update>
+
+    <update id="updateAboutme" parameterType="java.util.Map">
+        update tinybee.user
+        set aboutme = #{aboutme}
+        where userId = #{userId};
+    </update>
+
+    <update id="updateAvatarId" parameterType="java.util.Map">
+        update tinybee.user
+        set avatarId = #{avatarId}
+        where userId = #{userId};
+    </update>
+
+    <update id="updateLv" parameterType="java.util.Map">
+        update tinybee.user
+        set lv = lv + #{value}
+        where userId = #{userId};
+    </update>
+
+    <update id="updateMoney" parameterType="java.util.Map">
+        update tinybee.user
+        set money = money + #{value}
+        where userId = #{userId};
+    </update>
+    
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <Encoding>UTF-8</Encoding>
+        <encoder>
+            <pattern>[%date] %-5level [%thread] [%logger %line] - %message%n</pattern>
+        </encoder>
+    </appender>
+    
+    <!-- 输出到文件 -->
+    <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <Encoding>UTF-8</Encoding>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${webapp.root}/logs/platform.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder><!-- 必须指定，否则不会往文件输出内容 -->
+            <pattern>[%date] %-5level [%thread] [%logger] - %message%n</pattern>
+        </encoder>
+    </appender>
+    
+    <!-- aop -->
+    <appender name="dailyRollingFileAppenderAop" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${webapp.root}/logs/aop.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${webapp.root}/logs/aop.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} %L - %msg %n</Pattern>
+        </encoder>
+    </appender>
+    <logger name="com.tinybee.platform.aop" additivity="false">
+        <level value="ERROR" />
+        <appender-ref ref="dailyRollingFileAppenderAop"/>
+    </logger>
+    
+    <!-- controller -->
+    <appender name="dailyRollingFileAppenderController" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${webapp.root}/logs/controller.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${webapp.root}/logs/controller.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} %L - %msg %n</Pattern>
+        </encoder>
+    </appender>
+    <logger name="com.tinybee.platform.controller" additivity="false">
+        <level value="ERROR" />
+        <appender-ref ref="dailyRollingFileAppenderController"/>
+    </logger>
+    
+    <!-- mapper -->
+    <appender name="dailyRollingFileAppenderMapper" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${webapp.root}/logs/mapper.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${webapp.root}/logs/mapper.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} %L - %msg %n</Pattern>
+        </encoder>
+    </appender>
+    <logger name="com.tinybee.platform.mapper" additivity="false">
+        <level value="ERROR" />
+        <appender-ref ref="dailyRollingFileAppenderMapper"/>
+    </logger>
+    
+    <!-- druid -->
+    <appender name="dailyRollingFileAppenderDruid" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${webapp.root}/logs/druid.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${webapp.root}/logs/druid.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} %L - %msg %n</Pattern>
+        </encoder>
+    </appender>
+    <logger name="druid.sql" additivity="false">
+        <level value="DEBUG" />
+        <appender-ref ref="dailyRollingFileAppenderDruid"/>
+    </logger>
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="File"/>
+    </root>
+</configuration>

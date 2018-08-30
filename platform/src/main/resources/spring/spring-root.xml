@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:util="http://www.springframework.org/schema/util" 
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    	http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util-3.1.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/task
+		http://www.springframework.org/schema/task/spring-task.xsd">
+		
+	<!-- 扫描 -->
+	<context:component-scan base-package="com.tinybee.platform"/>
+<!-- 	<context:component-scan base-package="
+		com.tinybee.platform.aop,
+		com.tinybee.platform.controller,
+		com.tinybee.platform.module,
+		com.tinybee.platform.mapper,
+		com.tinybee.platform.scheduled"/> -->
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="true"/>
+		<property name="ignoreUnresolvablePlaceholders" value="true"/>
+		<property name="locations">
+			<list>
+				<value>classpath:properties/config.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 配置使Spring采用CGLIB代理 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+		
+    <!-- 引入jdbc配置 -->
+	<import resource="classpath:spring/spring-jdbc.xml"/>
+	<!-- 引入redis配置-->
+	<import resource="classpath:spring/spring-redis.xml"/>
+	<!-- 引入httpclient配置 -->
+	<!-- <import resource="classpath:spring/spring-httpclient.xml"/> -->
+	<!-- 引入task配置-->
+	<import resource="classpath:spring/spring-task.xml"/>
+</beans>
